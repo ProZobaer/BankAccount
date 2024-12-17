@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'Bank_Account.dart';
+
+import 'bank_account.dart';
 
 void main() {
   List<BankAccount> accounts = [];
@@ -27,22 +28,29 @@ void main() {
   void EditName() {
     print('Input Your Account ID: ');
     int id = int.parse(stdin.readLineSync()!);
-    BankAccount? account = accounts.firstWhere(
-      (account) => account.Id == id,
-      orElse: () => null!,
-    );
-    print('Current Name: ${account.Name}');
-    print('Input New Name: ');
-    String newName = stdin.readLineSync()!;
-    account.Name = newName;
-    print('Success! New name: $newName');
+
+    var matchingAccounts =
+    accounts.where((account) => account.Id == id).toList();
+
+    if (matchingAccounts.isEmpty) {
+      print('Account with ID $id not found.');
+    } else {
+      var account = matchingAccounts.first;
+      print('Current Name: ${account.Name}');
+      print('Input New Name: ');
+      String newName = stdin.readLineSync()!;
+      account.Name = newName;
+
+      print('Success! New name: $newName');
+    }
   }
 
   void DeleteName() {
     print('Input Your Account ID: ');
     int id = int.parse(stdin.readLineSync()!);
 
-    var accountToDelete = accounts.where((account) => account.Id == id).toList();
+    var accountToDelete =
+    accounts.where((account) => account.Id == id).toList();
 
     if (accountToDelete.isEmpty) {
       print('No account found with ID: $id');
@@ -56,7 +64,8 @@ void main() {
     print('Enter Account ID to Deposit Money:');
     int id = int.parse(stdin.readLineSync()!);
 
-    var matchingAccounts = accounts.where((account) => account.Id == id).toList();
+    var matchingAccounts =
+    accounts.where((account) => account.Id == id).toList();
 
     if (matchingAccounts.isEmpty) {
       print('Account with ID $id not found.');
@@ -73,7 +82,8 @@ void main() {
     print('Enter Account ID to Withdraw Money:');
     int id = int.parse(stdin.readLineSync()!);
 
-    var matchingAccounts = accounts.where((account) => account.Id == id).toList();
+    var matchingAccounts =
+    accounts.where((account) => account.Id == id).toList();
 
     if (matchingAccounts.isEmpty) {
       print('Account with ID $id not found.');
@@ -90,7 +100,8 @@ void main() {
     print('Enter Account ID to Search:');
     int id = int.parse(stdin.readLineSync()!);
 
-    var matchingAccounts = accounts.where((account) => account.Id == id).toList();
+    var matchingAccounts =
+    accounts.where((account) => account.Id == id).toList();
 
     if (matchingAccounts.isEmpty) {
       print('Account with ID $id not found.');
