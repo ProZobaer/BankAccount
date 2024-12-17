@@ -20,7 +20,6 @@ void main() {
     print('Enter Mobile Number:');
     mobileNumber = stdin.readLineSync();
 
-
     accounts.add(BankAccount(id, name, mobileNumber!));
     print('Account created successfully for: $name.');
   }
@@ -42,25 +41,31 @@ void main() {
   void DeleteName() {
     print('Input Your Account ID: ');
     int id = int.parse(stdin.readLineSync()!);
-    accounts.removeWhere((account) => account.Id == id);
-    print(' Successfully Delete');
+
+    var accountToDelete = accounts.where((account) => account.Id == id).toList();
+
+    if (accountToDelete.isEmpty) {
+      print('No account found with ID: $id');
+    } else {
+      accounts.removeWhere((account) => account.Id == id);
+      print('Successfully Deleted Account ID: $id');
+    }
   }
 
   void depositMoney() {
     print('Enter Account ID to Deposit Money:');
     int id = int.parse(stdin.readLineSync()!);
 
-    BankAccount? account = accounts.firstWhere(
-      (account) => account.Id == id,
-      orElse: () => null!,
-    );
+    var matchingAccounts = accounts.where((account) => account.Id == id).toList();
 
-    if (account != null) {
+    if (matchingAccounts.isEmpty) {
+      print('Account with ID $id not found.');
+    } else {
       print('Enter Amount to Deposit:');
       num amount = num.parse(stdin.readLineSync()!);
-      account.DepositBalance(amount);
-    } else {
-      print('Account with ID $id not found.');
+
+      matchingAccounts.first.DepositBalance(amount);
+      print('Successfully deposited \$${amount} to Account ID: $id');
     }
   }
 
@@ -68,17 +73,16 @@ void main() {
     print('Enter Account ID to Withdraw Money:');
     int id = int.parse(stdin.readLineSync()!);
 
-    BankAccount? account = accounts.firstWhere(
-      (account) => account.Id == id,
-      orElse: () => null!,
-    );
+    var matchingAccounts = accounts.where((account) => account.Id == id).toList();
 
-    if (account != null) {
+    if (matchingAccounts.isEmpty) {
+      print('Account with ID $id not found.');
+    } else {
       print('Enter Amount to Withdraw:');
       num amount = num.parse(stdin.readLineSync()!);
-      account.WithrawBalance(amount);
-    } else {
-      print('Account with ID $id not found.');
+
+      matchingAccounts.first.WithrawBalance(amount);
+      print('Successfully withdrew \$${amount} from Account ID: $id');
     }
   }
 
@@ -86,18 +90,15 @@ void main() {
     print('Enter Account ID to Search:');
     int id = int.parse(stdin.readLineSync()!);
 
-    BankAccount? account = accounts.firstWhere(
-      (account) => account.Id == id,
-      orElse: () => null!,
-    );
+    var matchingAccounts = accounts.where((account) => account.Id == id).toList();
 
-    if (account != null) {
+    if (matchingAccounts.isEmpty) {
+      print('Account with ID $id not found.');
+    } else {
       print('\nAccount Details');
       print('------------------------');
-      account.DisplayInfo();
+      matchingAccounts.first.DisplayInfo();
       print('------------------------');
-    } else {
-      print('Account with ID $id not found.');
     }
   }
 
